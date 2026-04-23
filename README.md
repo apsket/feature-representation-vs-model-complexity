@@ -15,7 +15,7 @@ This project explores an alternative perspective:
 We study a non-linearly separable classification problem and compare three strategies:
 ![Raw data](results/figures/raw_data.png)
 
-### 1. Flexible Model (Baseline
+### 1. Flexible Model (Baseline)
 - Support Vector Machine with RBF kernel.
 - High-capacity model that learns non-linear boundaries directly.
 
