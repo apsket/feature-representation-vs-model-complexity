@@ -1,31 +1,35 @@
-# When Do Linear Models Work? Feature Representation vs Model Complexity in Non-Linear Classification
-
-Most introductory machine learning material states that linear models (e.g., logistic regression) fail on non-linear decision boundaries, motivating the use of more complex methods such as kernelized models.
+# Learning Decision Boundaries: Representation, Inductive Bias, and Model Complexity
 
 ## Motivation
 
-The common claim that “linear models cannot solve non-linear problems” is true in the original feature space. In practice, model performance is often governed less by how the data is represented as much as the choice of algorithm.
+In many machine learning problems, performance is often attributed to model complexity. Non-linear datasets are typically handled with flexible models such as kernel methods or neural networks.
 
-This project explores the following hypothesis:
+This project explores an alternative perspective:
 
-> With appropriate feature transformations, simple linear models can recover complex decision boundaries that would otherwise require more sophisticated methods.
+> Complex decision boundaries can often be recovered by combining simple models with structured representations of the data.
 
 ---
 
 ## Approach
 
-To investigate this, we compare three modeling strategies on a non-linearly separable dataset:
-
+We study a non-linearly separable classification problem and compare three strategies:
 ![Raw data](results/figures/raw_data.png)
 
-- **Kernel-based method**  
-  Support Vector Machine with RBF kernel as a flexible, high-capacity baseline.
+### 1. Flexible Model (Baseline
+- Support Vector Machine with RBF kernel  
+- High-capacity model that learns non-linear boundaries directly  
 
-- **Feature-engineered linear model**  
-  Logistic regression applied to transformed features derived from geometric insight (polar coordinates and angular structure).
+### 2. Feature-Engineered Linear Model
+- Logistic regression applied to transformed features
+- Structured features capturing geometry (radius and angular components)
 
-- **Custom parametric boundary**  
-  A conic-section-inspired decision boundary, optimized directly via numerical methods.
+### 3. Non-Linear Logistic Regression
+- Polar logistic regression
+
+### 4. Parametric Geometric Boundary
+- Custom decision boundary inspired by conic sections  
+- Boundary defined analytically and learned via numerical optimization  
+- Includes both fixed and learnable orientation  
 
 ---
 
@@ -33,24 +37,49 @@ To investigate this, we compare three modeling strategies on a non-linearly sepa
 
 Instead of increasing model complexity, we modify the **representation of the data**:
 
-- Transform Cartesian coordinates → polar coordinates  
-- Introduce structured features (e.g., radial and angular components)  
-- Encode symmetry and geometry explicitly  
+- Encode geometric structure explicitly  
+- Transform to coordinate systems aligned with the problem  
+- Reduce the burden on the learning algorithm  
 
-This allows a linear model to operate in a space where the problem becomes separable.
+This shifts complexity from the model to the representation.
 
 ![Raw data](results/figures/polar_data_rectangular.png)
 
 ---
 
-## What This Project Shows
+## Results
 
-- Model limitations can be bypassed by a suitable representation of the system
-- Feature engineering can rival more complex models in expressive power
-- Incorporating domain or structural insight can significantly reduce model complexity
-- There is a trade-off between model flexibility and feature design effort
+- Feature-engineered logistic regression achieved performance comparable to kernel SVM on structured non-linear data  
+
+- Parametric geometric models provided interpretable boundaries with competitive accuracy  
+
+- Flexible models (SVM) were more robust under increasing noise  
+
+- Structured representations worked well when aligned with the underlying geometry, but degraded when misaligned  
 
 ---
+
+## Insights
+
+### Representation vs Model Complexity
+
+- Model performance is not only determined by algorithm choice, but by how the data is represented  
+
+- Simple models can recover complex behavior when structure is encoded explicitly  
+
+### Inductive Bias Matters
+
+- Feature engineering introduces assumptions about symmetry and geometry  
+
+- These assumptions can significantly improve efficiency—but also introduce failure modes  
+
+### Trade-offs
+
+- Flexible models: robust, but less interpretable  
+
+- Engineered representations: efficient and interpretable, but require insight  
+
+- Parametric models: highly structured, but sensitive to assumptions  
 
 ## Extensions
 
@@ -64,34 +93,20 @@ To further test these ideas, the project includes experiments on synthetically g
 
 ## Repository Structure
 
-- `data/` — input datasets (real and synthetic)  
-- `notebooks/` — exploratory analysis and visualizations  
-- `src/` — model implementations and utilities  
-- `results/` — plots and comparison outputs  
+- `data/` — input datasets (synthetic and real)  
+
+- `notebooks/` — exploratory analysis  
+
+- `src/` — model implementations  
+
+- `results/` — visualizations and comparisons  
 
 ---
 
 ## Summary
 
-Rather than asking *“Which model should I use?”*, this project reframes the question as:
+This project demonstrates that:
 
-> *“How should the problem be represented so that simple models succeed?”*
+> Learning performance depends as much on **representation and structure** as on model complexity.
 
-This perspective is central to effective machine learning in real-world systems.
-
----
-
-## Results & Key Findings
-
-- Feature-engineered logistic regression achieved comparable performance to SVM on non-linear data
-- Proper feature representation can reduce the need for complex models
-- Custom parametric boundaries provide interpretability but require careful design
-- Under increasing noise, kernel methods degrade more gracefully than engineered features
-
----
-
-## Conclusion
-
-Model performance is not solely determined by algorithmic complexity, but by how well the data representation aligns with the underlying structure of the problem.
-
-This suggests that, in many practical settings, investing in feature design can be as impactful as selecting more complex models.
+Understanding this trade-off is essential when designing systems that must operate under constraints such as interpretability, efficiency, or limited data.
