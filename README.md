@@ -39,6 +39,8 @@ Instead of increasing model complexity, we modify the **representation of the da
 
 This allows a linear model to operate in a space where the problem becomes separable.
 
+![Raw data](results/figures/polar_data_rectangular.png)
+
 ---
 
 ## What This Project Shows
