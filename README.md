@@ -89,7 +89,7 @@ This perspective is central to effective machine learning in real-world systems.
 - Under increasing noise, kernel methods degrade more gracefully than engineered features
 
 ---
-n
+
 ## Conclusion
 
 Model performance is not solely determined by algorithmic complexity, but by how well the data representation aligns with the underlying structure of the problem.
