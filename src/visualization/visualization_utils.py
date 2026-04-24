@@ -9,4 +9,4 @@ def create_meshgrid(X, resolution=100):
                                 np.linspace(y_min, y_max, resolution))
     grid_cartesian = pd.DataFrame({'x': grid_x.ravel(), 'y': grid_y.ravel()})
 
-    return grid_x.ravel(), grid_y.ravel(), grid_cartesian
+    return grid_x, grid_y, grid_cartesian
