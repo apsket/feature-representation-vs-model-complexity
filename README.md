@@ -1,6 +1,6 @@
 # Learning Decision Boundaries: Representation, Inductive Bias, and Model Complexity
 
-This project originated from questioning a common teaching example where a dataset is presented as non-linearly separable. By inspecting the geometry, I hypothesized that the apparent non-linearity was due to the choice of representation rather than the intrinsic structure of the data.
+This project originated from a simple question raised by a common teaching example in machine learning: a 2D dataset presented as non-linearly separable. By inspecting the geometry, I hypothesized that the apparent non-linearity was due to the choice of representation rather than the intrinsic structure of the data. Under an alternative representation, the same data might become linearly separable.
 
 This led to a series of experiments comparing model complexity against feature representation, exploring whether simple models could match more complex ones when given appropriate features.
 
