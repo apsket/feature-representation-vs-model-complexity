@@ -66,6 +66,8 @@ This reveals a structural asymmetry:
 
 > Representation improves efficiency, but reduces robustness to misspecification.
 
+While these results suggest a strong role of representation, further quantitative validation is needed to distinguish structural improvements from sampling effects.
+
 ---
 
 ## Current Status & Ongoing Work
