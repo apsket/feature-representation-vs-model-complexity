@@ -6,11 +6,14 @@ This led to a series of experiments comparing model complexity against feature r
 
 ## Motivation
 
-In many machine learning problems, performance is often attributed to model complexity. Non-linear datasets are typically handled with flexible models such as kernel methods or neural networks.
+In many machine learning problems, performance is often attributed to model complexity. Non-linear datasets are typically handled  by increasing model capacity with flexible models such as kernel methods or neural networks. This introduces a trade-off:
 
-This project explores an alternative perspective:
+- Higher capacity → better fit but reduced interpretability
+- Lower capacity → stronger assumptions but improved structure clarity
 
-> Complex decision boundaries can often be recovered by combining simple models with structured representations of the data.
+This project investigates whether part of this trade-off can be shifted:
+
+Can appropriate feature representations reduce the need for model complexity?
 
 ---
 
@@ -21,16 +24,13 @@ We study a non-linearly separable classification problem and compare three strat
 
 ### 1. Flexible Model (Baseline)
 - Support Vector Machine with RBF kernel.
-- High-capacity model that learns non-linear boundaries directly.
+- High-capacity model that learns non-linear boundaries directly in input space.
 
 ### 2. Feature-Engineered Linear Model
 - Logistic regression applied to transformed features.
 - Structured features capturing geometry (radius and angular components).
 
-### 3. Non-Linear Logistic Regression
-- Polar logistic regression.
-
-### 4. Parametric Geometric Boundary
+### 3. Parametric Geometric Boundary
 - Custom decision boundary inspired by conic sections.
 - Boundary defined analytically and learned via numerical optimization.
 - Includes both fixed and learnable orientation.
@@ -53,10 +53,18 @@ This shifts complexity from the model to the representation.
 
 ## Results
 
-- Feature-engineered logistic regression achieved performance comparable to kernel SVM on structured non-linear data.
-- Parametric geometric models provided interpretable boundaries with competitive accuracy.
-- Flexible models (SVM) were more robust under increasing noise.
-- Structured representations worked well when aligned with the underlying geometry, but degraded when misaligned.
+Feature-engineered logistic regression achieves performance comparable to kernel-based methods when:
+
+- The transformation aligns with the underlying geometry
+- Inductive bias matches data structure
+
+However:
+
+- Misaligned representations degrade performance more sharply than flexible models
+
+This reveals a structural asymmetry:
+
+> Representation improves efficiency, but reduces robustness to misspecification.
 
 ---
 
@@ -77,6 +85,33 @@ This shifts complexity from the model to the representation.
 - Flexible models: robust, but less interpretable.
 - Engineered representations: efficient and interpretable, but require insight.
 - Parametric models: highly structured, but sensitive to assumptions.
+
+### Inductive Bias Distribution
+
+Different approaches distribute inductive bias differently:
+
+- SVM: bias in kernel choice
+- Logistic regression: bias in feature space
+- Parametric model: bias in functional form
+
+This provides a unified interpretation:
+
+> Learning systems differ primarily in where they encode assumptions.
+
+---
+
+## Failure Modes
+
+The experiments also highlight structural failure cases:
+
+- Representation mismatch leads to brittle performance
+- Parametric models fail under boundary misspecification
+- Flexible models degrade gracefully but remain opaque
+
+This introduces a practical trade-off:
+
+Interpretability and efficiency increase with structured representations, but robustness increases with flexibility.
+
 
 ## Extensions
 
