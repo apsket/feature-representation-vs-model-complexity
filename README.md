@@ -68,6 +68,41 @@ This reveals a structural asymmetry:
 
 ---
 
+## Current Status & Ongoing Work
+
+### Feature Engineering Validation
+
+Current work focuses on formally justifying the impact of feature transformations beyond qualitative performance:
+
+- Measuring information gain and feature relevance
+- Evaluating sensitivity to feature inclusion/exclusion
+- Studying the effect of feature shifts and transformations on separability
+- Analyzing how representation changes alter the effective hypothesis space
+
+The goal is to move from:
+
+> “This representation works”
+
+to:
+
+> “This representation works and we can quantify why”
+
+### Statistical Evaluation of Model Performance
+
+To strengthen the empirical conclusions, ongoing work includes:
+
+- Cross-validation across multiple datasets and noise regimes
+- Statistical testing of performance differences between models:
+    - Significance of accuracy / loss differences
+    - Variance analysis across folds
+- Robustness evaluation under perturbations
+
+This addresses a key question:
+
+> Are observed improvements structural, or artifacts of specific samples?
+
+---
+
 ## Insights
 
 ### Representation vs Model Complexity
