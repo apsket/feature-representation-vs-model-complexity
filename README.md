@@ -20,7 +20,7 @@ Can appropriate feature representations reduce the need for model complexity?
 ## Approach
 
 We study a non-linearly separable classification problem and compare three strategies:
-![Raw data](results/figures/raw_data.png)
+![Raw data](results/figures/original_dataset.png)
 
 ### 1. Flexible Model (Baseline)
 - Support Vector Machine with RBF kernel.
