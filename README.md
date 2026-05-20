@@ -58,7 +58,7 @@ Feature-engineered logistic regression achieves performance comparable to kernel
 - The transformation aligns with the underlying geometry
 - Inductive bias matches data structure
 
-![Raw data](results/figures/polar_log_reg_rectangular.png)
+![Raw data](results/figures/polar_logi_regr_rectangular.png)
 
 However:
 
