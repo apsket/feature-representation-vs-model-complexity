@@ -6,7 +6,9 @@ class ModelMetrics():
     def __init__(self, model_name, dataset_name, response, estimated_response):
         self.response = response
         self.estimated_response = estimated_response
-        self.metrics = {'model': model_name, 'dataset': dataset_name}
+        self.metadata = {'model': model_name, 'dataset': dataset_name}
+        self.metrics = dict()
+        self.confusion_matrix = None
     
     def compute_metrics(self):
         metrics = {
