@@ -4,6 +4,8 @@ This project originated from a simple question raised by a common teaching examp
 
 This led to a series of experiments comparing model complexity against feature representation, exploring whether simple models could match more complex ones when given appropriate features.
 
+![Raw data](results/figures/original_dataset.png)
+
 ## Motivation
 
 In many machine learning problems, performance is often attributed to model complexity. Non-linear datasets are typically handled  by increasing model capacity with flexible models such as kernel methods or neural networks. This introduces a trade-off:
@@ -20,7 +22,6 @@ Can appropriate feature representations reduce the need for model complexity?
 ## Approach
 
 We study a non-linearly separable classification problem and compare three strategies:
-![Raw data](results/figures/original_dataset.png)
 
 ### 1. Flexible Model (Baseline)
 - Support Vector Machine with RBF kernel.
@@ -57,8 +58,6 @@ Feature-engineered logistic regression achieves performance comparable to kernel
 
 - The transformation aligns with the underlying geometry
 - Inductive bias matches data structure
-
-![Raw data](results/figures/polar_logi_regr_rectangular.png)
 
 However:
 

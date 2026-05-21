@@ -5,12 +5,16 @@ import pandas as pd
 def cartesian_to_polar(x, y):
     r = np.sqrt(x**2 + y**2)
     theta = np.arctan2(y, x)
-    return pd.DataFrame({"r": r, "theta": theta})
+    return pd.DataFrame({"x": r, "y": theta})
 
 # Convert 2D Cartesian to elliptic coordinates on numpy arrays
 # elliptic is a family of coordinates characterizable by a parameter (c)
 def cartesian_to_elliptic(x, y, c=1):
     u = np.arccosh((1/(2*c)) * (np.sqrt((x**2 + c**2)**2 + y**2) + np.sqrt((x**2 - c**2)**2 + y**2)))
     v = np.arctan2(y, x)
-    return pd.DataFrame({"u": u, "v": v})
+    return pd.DataFrame({"x": u, "y": v})
+
+# Convert polar to custom curvilinear coordinatesn (r, cos^2(theta))
+def polar_to_curvilinear_cos2theta(r, theta):
+    return pd.DataFrame({"x": r, "y": np.cos(theta)**2})
 
