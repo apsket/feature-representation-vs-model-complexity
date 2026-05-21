@@ -8,7 +8,9 @@ def cartesian_to_polar(x, y):
     return pd.DataFrame({"r": r, "theta": theta})
 
 # Convert 2D Cartesian to elliptic coordinates on numpy arrays
+# elliptic is a family of coordinates characterizable by a parameter (c)
 def cartesian_to_elliptic(x, y, c=1):
     u = np.arccosh((1/(2*c)) * (np.sqrt((x**2 + c**2)**2 + y**2) + np.sqrt((x**2 - c**2)**2 + y**2)))
     v = np.arctan2(y, x)
     return pd.DataFrame({"u": u, "v": v})
+
