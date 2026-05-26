@@ -6,8 +6,8 @@ def plot_in_rectangular_coordinates(
     X: pd.DataFrame, 
     y: pd.DataFrame, 
     title: str, 
-    axis_x='x', 
-    axis_y='y', 
+    axis_x='x1', 
+    axis_y='x2', 
     axis_x_label=None,  # Custom display label for X axis
     axis_y_label=None,  # Custom display label for Y axis
     figsize=(8, 6), 
