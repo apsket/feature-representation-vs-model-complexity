@@ -41,7 +41,7 @@ class PointsDataset:
         X_transformed = transform_fn(self.X['x1'], self.X['x2'])
         
         coord_sys = new_coordinate_system or self._coordinate_system
-        if (new_coordinate_system != 'cartesian') and (new_feature_mapping is None):
+        if ((new_coordinate_system is not None) and (new_coordinate_system != 'cartesian')) and (new_feature_mapping is None):
             raise ValueError(f"When new_coordinate_system is given, new_feature_mapping is required")
         feat_map = new_feature_mapping or self.feature_mapping
         
