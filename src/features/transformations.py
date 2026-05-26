@@ -14,6 +14,9 @@ def cartesian_to_elliptic(x, y, c=1):
     v = np.arctan2(y, x)
     return pd.DataFrame({"x1": u, "x2": v})
 
+def polar_to_cartesian(r, theta):
+    return pd.DataFrame({'x1': r * np.cos(theta), 'x2': r * np.sin(theta)})
+
 # Convert polar to custom curvilinear coordinates (r, cos^2(theta))
 def polar_to_curvilinear_cos2theta(r, theta):
     return pd.DataFrame({"x1": r, "x2": np.cos(theta)**2})
