@@ -2,7 +2,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_decision_boundary(model, X, y, prediction_domain, grid_x, grid_y, title, metrics=None):
+def plot_decision_boundary(
+        model,
+        dataset_X, dataset_y, 
+        prediction_domain,
+        grid_x, grid_y, 
+        title,
+        metrics=None,
+        col1 = 'x1',
+        col2 = 'x2',
+        axis_x_label = None,
+        axis_y_label = None
+    ):
     """
     Plots a decision boundary with high-quality styling and a perfectly centered metrics subtitle.
     """
@@ -23,13 +34,13 @@ def plot_decision_boundary(model, X, y, prediction_domain, grid_x, grid_y, title
 
         # True Positive Data points
         ax.scatter(
-            X[y == 1]['x'], X[y == 1]['y'],
+            dataset_X[dataset_y == 1][col1], dataset_X[dataset_y == 1][col2],
             color='blue', marker='o', edgecolors='k', label='Positive', zorder=3
         )
 
         # True Negative Data points
         ax.scatter(
-            X[y == 0]['x'], X[y == 0]['y'],
+            dataset_X[dataset_y == 0][col1], dataset_X[dataset_y == 0][col2],
             color='red', marker='o', edgecolors='k', label='Negative', zorder=3
         )
 
@@ -39,14 +50,14 @@ def plot_decision_boundary(model, X, y, prediction_domain, grid_x, grid_y, title
         
         # Predicted points overlay
         ax.scatter(
-            X['x'], X['y'], 
+            dataset_X[col1], dataset_X[col2], 
             edgecolors='y', marker='.', color='yellow', s=10, 
             label='Points Predicted', zorder=4
         )
 
         # Labels & Grid
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
+        ax.set_xlabel(axis_x_label if axis_x_label is not None else col1)
+        ax.set_ylabel(axis_y_label if axis_y_label is not None else col2)
         ax.legend(loc='best', framealpha=0.8)
         ax.grid(True)
 
