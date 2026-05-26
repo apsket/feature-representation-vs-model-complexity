@@ -81,7 +81,7 @@ def generate_uniform_ring_synthetic_dataset(
     )
 
     X = pd.concat([X1, X2])
-    y = np.concat([np.zeros(len(X1)), np.ones(len(X2))])
+    y = np.concat([np.ones(len(X1)), np.zeros(len(X2))])
 
     return X, y
 
