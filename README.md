@@ -1,6 +1,6 @@
 # Learning Decision Boundaries: Representation, Inductive Bias, and Model Complexity
 
-This project originated from a simple question raised by a common teaching example in machine learning: a 2D dataset presented as non-linearly separable. By inspecting the geometry, I hypothesized that the apparent non-linearity was due to the choice of representation rather than the intrinsic structure of the data. Under an alternative representation, the same data might become linearly separable.
+This project originated from a simple question raised by a common example in machine learning: a 2D dataset presented as non-linearly separable. By inspecting the geometry, I hypothesized that the apparent non-linearity was due to the choice of representation rather than the intrinsic structure of the data. Under an alternative representation, the same data might become linearly separable.
 
 This led to a series of experiments comparing model complexity against feature representation, exploring whether simple models could match more complex ones when given appropriate features.
 
@@ -29,9 +29,9 @@ We study a non-linearly separable classification problem and compare three strat
 
 ### 2. Feature-Engineered Linear Model
 - Logistic regression applied to transformed features.
-- Structured features capturing geometry (radius and angular components).
+- Structured features capturing geometry (radius and angular dependence components).
 
-### 3. Parametric Geometric Boundary
+### 3. Parametric Geometric Boundary [Planned]
 - Custom decision boundary inspired by conic sections.
 - Boundary defined analytically and learned via numerical optimization.
 - Includes both fixed and learnable orientation.
@@ -40,7 +40,7 @@ We study a non-linearly separable classification problem and compare three strat
 
 ## Key Idea
 
-Instead of increasing model complexity, we modify the **representation of the data**:
+Instead of increasing model complexity, we modify the representation of the data:
 
 - Encode geometric structure explicitly.
 - Transform to coordinate systems aligned with the problem.
@@ -50,14 +50,17 @@ This shifts complexity from the model to the representation.
 
 ![Raw data](results/figures/polar_data_rectangular.png)
 
+A heavy linear dependence on radial distance is made explicit by this visual.
+
 ---
 
 ## Results
 
 Feature-engineered logistic regression achieves performance comparable to kernel-based methods when:
 
-- The transformation aligns with the underlying geometry
+- The transformation aligns with the underlying geometry (mutual information score is increased by these features)
 - Inductive bias matches data structure
+- Latent distribution implemented by features is more robust to noise
 
 However:
 
@@ -75,20 +78,7 @@ While these results suggest a strong role of representation, further quantitativ
 
 ### Feature Engineering Validation
 
-Current work focuses on formally justifying the impact of feature transformations beyond qualitative performance:
-
-- Measuring information gain and feature relevance
-- Evaluating sensitivity to feature inclusion/exclusion
-- Studying the effect of feature shifts and transformations on separability
-- Analyzing how representation changes alter the effective hypothesis space
-
-The goal is to move from:
-
-> “This representation works”
-
-to:
-
-> “This representation works and we can quantify why”
+Current work focuses on evaluating the statistical significance of the cross-validation results and extending the model evaluation to cover performance against noise.
 
 ### Statistical Evaluation of Model Performance
 
@@ -104,6 +94,16 @@ This addresses a key question:
 
 > Are observed improvements structural, or artifacts of specific samples?
 
+### Synthetically Generated Datasets
+
+The project includes experiments on synthetically generated datasets with controlled noise and known decision boundaries. This allows evaluation of:
+
+- Robustness to noise
+- Stability of different modeling approaches
+- When feature engineering breaks down relative to more flexible models
+
+In a controlled synthetic setting with known geometric structure, model performance differences are governed by the interaction between sample size and representation alignment. In low-data regimes, inductive bias and feature engineering strongly influence performance. As sample size increases, all sufficiently expressive models converge to near-optimcal decision boundary, and differences reduce to computational efficiency rather than predictive accuracy, with simpler models taking less time to train on larger datasets.
+
 ---
 
 ## Insights
@@ -116,13 +116,13 @@ This addresses a key question:
 ### Inductive Bias Matters
 
 - Feature engineering introduces assumptions about symmetry and geometry.
+- When the encoded structure matches the underlying distribution, model performance is more robust against noise.
 - These assumptions can significantly improve efficiency—but also introduce failure modes.
 
 ### Trade-offs
 
-- Flexible models: robust, but less interpretable.
-- Engineered representations: efficient and interpretable, but require insight.
-- Parametric models: highly structured, but sensitive to assumptions.
+- Flexible models: robust, but less interpretable and prone to overfitting.
+- Engineered representations: efficient and interpretable, but require pre-conceived domain insight.
 
 ### Inductive Bias Distribution
 
@@ -130,7 +130,6 @@ Different approaches distribute inductive bias differently:
 
 - SVM: bias in kernel choice
 - Logistic regression: bias in feature space
-- Parametric model: bias in functional form
 
 This provides a unified interpretation:
 
@@ -149,15 +148,6 @@ The experiments also highlight structural failure cases:
 This introduces a practical trade-off:
 
 Interpretability and efficiency increase with structured representations, but robustness increases with flexibility.
-
-
-## Extensions
-
-To further test these ideas, the project includes experiments on synthetically generated datasets with controlled noise and known decision boundaries. This allows evaluation of:
-
-- Robustness to noise
-- Stability of different modeling approaches
-- When feature engineering breaks down relative to more flexible models
 
 ---
 
