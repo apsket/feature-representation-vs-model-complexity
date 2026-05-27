@@ -58,6 +58,8 @@ A heavy linear dependence on radial distance is made explicit by this visual.
 
 Cross-validation results analyzed using the Friedman test did not reveal statistically significant differences in F1-score across models under the evaluated conditions ($p > 0.05$). This suggests that feature-engineered linear models can achieve performance comparable to higher-capacity kernel methods when the representation aligns with the underlying geometric structure of the data.
 
+![Raw data](results/figures/polar_logi_svm.png)
+
 Feature-engineered logistic regression achieves performance comparable to kernel-based methods when:
 
 - The transformation aligns with the underlying geometry (mutual information score is increased by these features)
