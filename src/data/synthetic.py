@@ -1,6 +1,7 @@
 from typing import Tuple
 import numpy as np
 import pandas as pd
+from src.data.loaders import PointsDataset
 
 
 def generate_uniform_ring_points(
@@ -93,3 +94,48 @@ def generate_custom_polar_dataset(num_points, r_bound_func=None):
     r_inner = np.random.uniform(np.zeros(r_bounds.size), r_bounds)
 
     return r_inner
+
+
+def generate_custom_polar_points(
+        num_points: int,
+        theta_lb: float,
+        theta_ub: float,
+        theta_pdf: callable,
+        r_inner_bound_func: callable,
+        r_outer_bound_func: callable,
+        r_pdf: callable
+    ):
+
+    theta = theta_pdf(theta_lb, theta_ub, num_points)
+    r_inner_bounds = r_inner_bound_func(theta)
+    r_outer_bounds = r_outer_bound_func(theta)
+    r = r_pdf(r_inner_bounds, r_outer_bounds, num_points)
+
+    return np.column_stack((r, theta))
+
+
+def generate_custom_polar_dataset(
+        label: int,
+        num_points: int,
+        theta_lb: float = -np.pi,
+        theta_ub: float = np.pi,
+        theta_pdf: callable =np.random.uniform,
+        r_inner_bound_func: callable = lambda theta: np.array([0]*theta.size),
+        r_outer_bound_func: callable = lambda theta: np.array([1]*theta.size),
+        r_pdf: callable = lambda low, high, size: np.sqrt(np.random.uniform(low**2, high**2, size))
+    ):
+    if label not in {0, 1}:
+        raise ValueError("Invalid dataset label. Supported labels are 0 and 1.")
+    
+    polar_points = generate_custom_polar_points(
+        num_points=num_points, 
+        theta_lb=theta_lb, theta_ub=theta_ub, theta_pdf=theta_pdf, 
+        r_inner_bound_func=r_inner_bound_func, r_outer_bound_func=r_outer_bound_func, r_pdf=r_pdf
+    )
+    
+    return PointsDataset(
+        pd.DataFrame(polar_points, columns=["x1", "x2"]),
+        y=np.zeros(num_points) if label == 0 else np.ones(num_points),
+        coordinate_system="polar",
+        feature_mapping={"x1": "r", "x2": "theta"}
+    )
