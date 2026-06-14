@@ -102,7 +102,7 @@ def generate_custom_polar_points(
     theta = theta_pdf(theta_lb, theta_ub, num_points)
     r_inner_bounds = r_inner_bound_func(theta)
     r_outer_bounds = r_outer_bound_func(theta)
-    r = r_pdf(r_inner_bounds, r_outer_bounds, num_points)
+    r = r_pdf(r_inner_bounds, r_outer_bounds)
 
     if theta_noise != 0:
         theta += np.random.normal(loc=0.0, scale=theta_noise, size=num_points)
@@ -122,7 +122,7 @@ def generate_custom_polar_dataset(
         theta_pdf: callable =np.random.uniform,
         r_inner_bound_func: callable = lambda theta: np.array([0]*theta.size),
         r_outer_bound_func: callable = lambda theta: np.array([1]*theta.size),
-        r_pdf: callable = lambda low, high, size: np.sqrt(np.random.uniform(low**2, high**2, size)),
+        r_pdf: callable = lambda low, high: np.sqrt(np.random.uniform(low**2, high**2)),
         theta_noise: float = 0.0,
         r_noise: float = 0.0,
     ):
