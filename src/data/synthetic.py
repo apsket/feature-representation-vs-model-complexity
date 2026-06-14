@@ -87,15 +87,6 @@ def generate_uniform_ring_synthetic_dataset(
     return X, y
 
 
-def generate_custom_polar_dataset(num_points, r_bound_func=None):
-
-    theta_inner = np.random.uniform(-np.pi, np.pi, num_points)
-    r_bounds = r_bound_func(theta_inner)
-    r_inner = np.random.uniform(np.zeros(r_bounds.size), r_bounds)
-
-    return r_inner
-
-
 def generate_custom_polar_points(
         num_points: int,
         theta_lb: float,
@@ -103,13 +94,22 @@ def generate_custom_polar_points(
         theta_pdf: callable,
         r_inner_bound_func: callable,
         r_outer_bound_func: callable,
-        r_pdf: callable
+        r_pdf: callable,
+        theta_noise: float = 0.0,
+        r_noise: float = 0.0,
     ):
 
     theta = theta_pdf(theta_lb, theta_ub, num_points)
     r_inner_bounds = r_inner_bound_func(theta)
     r_outer_bounds = r_outer_bound_func(theta)
     r = r_pdf(r_inner_bounds, r_outer_bounds, num_points)
+
+    if theta_noise != 0:
+        theta += np.random.normal(loc=0.0, scale=theta_noise, size=num_points)
+
+    if r_noise != 0:
+        r += np.random.normal(loc=0.0, scale=r_noise, size=num_points)
+        r = np.abs(r)
 
     return np.column_stack((r, theta))
 
@@ -122,7 +122,9 @@ def generate_custom_polar_dataset(
         theta_pdf: callable =np.random.uniform,
         r_inner_bound_func: callable = lambda theta: np.array([0]*theta.size),
         r_outer_bound_func: callable = lambda theta: np.array([1]*theta.size),
-        r_pdf: callable = lambda low, high, size: np.sqrt(np.random.uniform(low**2, high**2, size))
+        r_pdf: callable = lambda low, high, size: np.sqrt(np.random.uniform(low**2, high**2, size)),
+        theta_noise: float = 0.0,
+        r_noise: float = 0.0,
     ):
     if label not in {0, 1}:
         raise ValueError("Invalid dataset label. Supported labels are 0 and 1.")
@@ -130,7 +132,8 @@ def generate_custom_polar_dataset(
     polar_points = generate_custom_polar_points(
         num_points=num_points, 
         theta_lb=theta_lb, theta_ub=theta_ub, theta_pdf=theta_pdf, 
-        r_inner_bound_func=r_inner_bound_func, r_outer_bound_func=r_outer_bound_func, r_pdf=r_pdf
+        r_inner_bound_func=r_inner_bound_func, r_outer_bound_func=r_outer_bound_func, r_pdf=r_pdf,
+        theta_noise=theta_noise, r_noise=r_noise
     )
     
     return PointsDataset(
