@@ -9,8 +9,8 @@ def plot_decision_boundary(
         grid_x, grid_y, 
         title,
         metrics=None,
-        col1 = 'x1',
-        col2 = 'x2',
+        axis_x: str = None,
+        axis_y: str = None,
         axis_x_label = None,
         axis_y_label = None
     ):
@@ -28,19 +28,24 @@ def plot_decision_boundary(
         'grid.alpha': 0.20,
         'grid.linestyle': '--'
     }
+
+    if not axis_x:
+        axis_x = dataset_X.columns[0]
+    if not axis_y:
+        axis_y = dataset_X.columns[1]
     
     with plt.rc_context(custom_rc):
         fig, ax = plt.subplots(figsize=(8, 6), dpi=300)
 
         # True Positive Data points
         ax.scatter(
-            dataset_X[dataset_y == 1][col1], dataset_X[dataset_y == 1][col2],
+            dataset_X[dataset_y == 1][axis_x], dataset_X[dataset_y == 1][axis_y],
             color='blue', marker='o', edgecolors='k', label='Positive', zorder=3
         )
 
         # True Negative Data points
         ax.scatter(
-            dataset_X[dataset_y == 0][col1], dataset_X[dataset_y == 0][col2],
+            dataset_X[dataset_y == 0][axis_x], dataset_X[dataset_y == 0][axis_y],
             color='red', marker='o', edgecolors='k', label='Negative', zorder=3
         )
 
@@ -50,14 +55,14 @@ def plot_decision_boundary(
         
         # Predicted points overlay
         ax.scatter(
-            dataset_X[col1], dataset_X[col2], 
+            dataset_X[axis_x], dataset_X[axis_y], 
             edgecolors='y', marker='.', color='yellow', s=10, 
             label='Points Predicted', zorder=4
         )
 
         # Labels & Grid
-        ax.set_xlabel(axis_x_label if axis_x_label is not None else col1)
-        ax.set_ylabel(axis_y_label if axis_y_label is not None else col2)
+        ax.set_xlabel(axis_x_label if axis_x_label is not None else axis_x)
+        ax.set_ylabel(axis_y_label if axis_y_label is not None else axis_y)
         ax.legend(loc='best', framealpha=0.8)
         ax.grid(True)
 

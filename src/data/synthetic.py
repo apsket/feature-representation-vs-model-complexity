@@ -97,7 +97,10 @@ def generate_custom_polar_points(
         r_pdf: callable,
         theta_noise: float = 0.0,
         r_noise: float = 0.0,
+        random_seed: int = None
     ):
+
+    rng = np.random.default_rng(seed=random_seed)
 
     theta = theta_pdf(theta_lb, theta_ub, num_points)
     r_inner_bounds = r_inner_bound_func(theta)
@@ -105,10 +108,10 @@ def generate_custom_polar_points(
     r = r_pdf(r_inner_bounds, r_outer_bounds)
 
     if theta_noise != 0:
-        theta += np.random.normal(loc=0.0, scale=theta_noise, size=num_points)
+        theta += rng.vonmises(mu=0.0, kappa=theta_noise, size=num_points)
 
     if r_noise != 0:
-        r += np.random.normal(loc=0.0, scale=r_noise, size=num_points)
+        r += rng.normal(loc=0.0, scale=r_noise, size=num_points)
         r = np.abs(r)
 
     return np.column_stack((r, theta))
@@ -125,6 +128,7 @@ def generate_custom_polar_dataset(
         r_pdf: callable = lambda low, high: np.sqrt(np.random.uniform(low**2, high**2)),
         theta_noise: float = 0.0,
         r_noise: float = 0.0,
+        random_seed: int = None,
     ):
     if label not in {0, 1}:
         raise ValueError("Invalid dataset label. Supported labels are 0 and 1.")
@@ -137,8 +141,6 @@ def generate_custom_polar_dataset(
     )
     
     return PointsDataset(
-        pd.DataFrame(polar_points, columns=["x1", "x2"]),
-        y=np.zeros(num_points) if label == 0 else np.ones(num_points),
-        coordinate_system="polar",
-        feature_mapping={"x1": "r", "x2": "theta"}
+        pd.DataFrame(polar_points, columns=["r", "theta"]),
+        y=np.zeros(num_points) if label == 0 else np.ones(num_points)
     )
