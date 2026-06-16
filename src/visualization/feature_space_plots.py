@@ -5,9 +5,9 @@ import pandas as pd
 def plot_in_rectangular_coordinates(
     X: pd.DataFrame, 
     y: pd.DataFrame, 
-    title: str, 
-    axis_x='x1', 
-    axis_y='x2', 
+    title: str,
+    axis_x: str = None,
+    axis_y: str = None,
     axis_x_label=None,  # Custom display label for X axis
     axis_y_label=None,  # Custom display label for Y axis
     figsize=(8, 6), 
@@ -33,6 +33,11 @@ def plot_in_rectangular_coordinates(
     # Use column names to extract the data safely
     pos = X[y == 1]
     neg = X[y == 0]
+
+    if not axis_x:
+        axis_x = X.columns[0]
+    if not axis_y:
+        axis_y = X.columns[1]
 
     with plt.rc_context(custom_rc):
         fig, ax = plt.subplots(figsize=figsize, dpi=300)

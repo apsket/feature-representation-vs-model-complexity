@@ -1,6 +1,7 @@
 from typing import Tuple
 import numpy as np
 import pandas as pd
+from src.data.loaders import PointsDataset
 
 
 def generate_uniform_ring_points(
@@ -86,10 +87,67 @@ def generate_uniform_ring_synthetic_dataset(
     return X, y
 
 
-def generate_custom_polar_dataset(num_points, r_bound_func=None):
+def generate_custom_polar_points(
+        num_points: int,
+        theta_lb: float,
+        theta_ub: float,
+        theta_pdf: callable,
+        r_inner_bound_func: callable,
+        r_outer_bound_func: callable,
+        r_pdf: callable,
+        theta_noise: float = 0.0,
+        r_noise: float = 0.0,
+        random_seed: int = None
+    ):
 
-    theta_inner = np.random.uniform(-np.pi, np.pi, num_points)
-    r_bounds = r_bound_func(theta_inner)
-    r_inner = np.random.uniform(np.zeros(r_bounds.size), r_bounds)
+    rng = np.random.default_rng(seed=random_seed)
 
-    return r_inner
+    theta = theta_pdf(theta_lb, theta_ub, num_points)
+    r_inner_bounds = r_inner_bound_func(theta)
+    r_outer_bounds = r_outer_bound_func(theta)
+    r = r_pdf(r_inner_bounds, r_outer_bounds)
+
+    if theta_noise != 0:
+        theta += rng.vonmises(mu=0.0, kappa=theta_noise, size=num_points)
+
+    if r_noise != 0:
+        r += rng.normal(loc=0.0, scale=r_noise, size=num_points)
+        r = np.abs(r)
+
+    return np.column_stack((r, theta))
+
+
+def generate_custom_polar_dataset(
+        label: int,
+        num_points: int,
+        theta_lb: float = -np.pi,
+        theta_ub: float = np.pi,
+        theta_pdf: callable = None,
+        r_inner_bound_func: callable = lambda theta: np.array([0]*theta.size),
+        r_outer_bound_func: callable = lambda theta: np.array([1]*theta.size),
+        r_pdf: callable = None,
+        theta_noise: float = 0.0,
+        r_noise: float = 0.0,
+        random_seed: int = None,
+    ):
+    if label not in {0, 1}:
+        raise ValueError("Invalid dataset label. Supported labels are 0 and 1.")
+    
+    rng = np.random.default_rng(seed=random_seed)
+    if theta_pdf is None:
+        theta_pdf = rng.uniform
+    if r_pdf is None:
+        r_pdf = lambda low, high: np.sqrt(rng.uniform(low**2, high**2))
+    
+    polar_points = generate_custom_polar_points(
+        num_points=num_points, 
+        theta_lb=theta_lb, theta_ub=theta_ub, theta_pdf=theta_pdf, 
+        r_inner_bound_func=r_inner_bound_func, r_outer_bound_func=r_outer_bound_func, r_pdf=r_pdf,
+        theta_noise=theta_noise, r_noise=r_noise,
+        random_seed=random_seed
+    )
+    
+    return PointsDataset(
+        pd.DataFrame(polar_points, columns=["r", "theta"]),
+        y=np.zeros(num_points) if label == 0 else np.ones(num_points)
+    )
