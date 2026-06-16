@@ -56,6 +56,10 @@ A heavy linear dependence on radial distance is made explicit by this visual.
 
 ## Results
 
+Cross-validation results analyzed using the Friedman test did not reveal statistically significant differences in F1-score across models under the evaluated conditions ($p > 0.05$). This suggests that feature-engineered linear models can achieve performance comparable to higher-capacity kernel methods when the representation aligns with the underlying geometric structure of the data.
+
+![Raw data](results/figures/polar_logi_svm.png)
+
 Feature-engineered logistic regression achieves performance comparable to kernel-based methods when:
 
 - The transformation aligns with the underlying geometry (mutual information score is increased by these features)
@@ -76,11 +80,13 @@ While these results suggest a strong role of representation, further quantitativ
 
 ## Current Status & Ongoing Work
 
-### Feature Engineering Validation
+### Statistical Evaluation of Model Performance
 
 Current work focuses on evaluating the statistical significance of the cross-validation results and extending the model evaluation to cover performance against noise.
 
-### Statistical Evaluation of Model Performance
+> Due to the small size of the original dataset, statistical testing is interpreted primarily as inferential evaluation rather than definitive evidence of model superiority.
+
+Statistical significance of performance differences is assessed using the Friedman test across cross-validation folds, followed by paired t-tests with multiple comparison correction. All models are evaluated using identical stratified k-fold splits to ensure paired statistical comparison.
 
 To strengthen the empirical conclusions, ongoing work includes:
 
@@ -102,7 +108,7 @@ The project includes experiments on synthetically generated datasets with contro
 - Stability of different modeling approaches
 - When feature engineering breaks down relative to more flexible models
 
-In a controlled synthetic setting with known geometric structure, model performance differences are governed by the interaction between sample size and representation alignment. In low-data regimes, inductive bias and feature engineering strongly influence performance. As sample size increases, all sufficiently expressive models converge to near-optimcal decision boundary, and differences reduce to computational efficiency rather than predictive accuracy, with simpler models taking less time to train on larger datasets.
+In a controlled synthetic setting with known geometric structure, model performance differences are consistent with dependence on the interaction between sample size and representation alignment. In low-data regimes, inductive bias and feature engineering strongly influence performance. As sample size increases, all sufficiently expressive models converge to near-optimcal decision boundary, and differences reduce to computational efficiency rather than predictive accuracy, with simpler models taking less time to train on larger datasets.
 
 ---
 
