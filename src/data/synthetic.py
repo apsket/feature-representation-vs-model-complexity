@@ -122,10 +122,10 @@ def generate_custom_polar_dataset(
         num_points: int,
         theta_lb: float = -np.pi,
         theta_ub: float = np.pi,
-        theta_pdf: callable =np.random.uniform,
+        theta_pdf: callable = None,
         r_inner_bound_func: callable = lambda theta: np.array([0]*theta.size),
         r_outer_bound_func: callable = lambda theta: np.array([1]*theta.size),
-        r_pdf: callable = lambda low, high: np.sqrt(np.random.uniform(low**2, high**2)),
+        r_pdf: callable = None,
         theta_noise: float = 0.0,
         r_noise: float = 0.0,
         random_seed: int = None,
@@ -133,11 +133,18 @@ def generate_custom_polar_dataset(
     if label not in {0, 1}:
         raise ValueError("Invalid dataset label. Supported labels are 0 and 1.")
     
+    rng = np.random.default_rng(seed=random_seed)
+    if theta_pdf is None:
+        theta_pdf = rng.uniform
+    if r_pdf is None:
+        r_pdf = lambda low, high: np.sqrt(rng.uniform(low**2, high**2))
+    
     polar_points = generate_custom_polar_points(
         num_points=num_points, 
         theta_lb=theta_lb, theta_ub=theta_ub, theta_pdf=theta_pdf, 
         r_inner_bound_func=r_inner_bound_func, r_outer_bound_func=r_outer_bound_func, r_pdf=r_pdf,
-        theta_noise=theta_noise, r_noise=r_noise
+        theta_noise=theta_noise, r_noise=r_noise,
+        random_seed=random_seed
     )
     
     return PointsDataset(
