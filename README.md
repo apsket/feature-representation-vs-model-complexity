@@ -123,7 +123,17 @@ In a controlled synthetic setting with known geometric structure, model performa
 
 #### Circular Boundaries
 
+![Raw data](results/figures/synth_circular_noise_summary.png)
+
+![Raw data](results/figures/synth_circular_sizes.png)
+
 #### Elliptical Boundaries
+
+![Raw data](results/figures/synth_elliptical_summary.png)
+
+#### Non-Symmetric Boundaries
+
+![Raw data](results/figures/non_radial_symmetric_summary.png)
 
 ---
 
