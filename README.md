@@ -43,16 +43,19 @@ y(t) = b\sin{t}
 $$
 
 the squared distance from the origin is
+
 $$
 r^2(t) = a^2\cos^2{t} + b^2\sin^2{t}
 $$
 
 which can be rewritten as
+
 $$
 r^2(t) = b^2 + (a^2-b^2)\cos^2{t}
 $$
 
 The parameter angle $t$ is related to the polar angle $\theta$ through
+
 $$
 \tan{\theta} = (b/a) \tan{t}
 $$
@@ -60,6 +63,7 @@ $$
 allowing $θ$-based approximations that become exact in the circular limit.
 
 Defining:
+
 $$
 g_{i}(t) = b^2 + (a^2-b^2)\cos^2{\theta} - R_{i}^2
 $$
