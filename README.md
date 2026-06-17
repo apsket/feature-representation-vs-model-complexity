@@ -38,8 +38,10 @@ We study a non-linearly separable classification problem and compare three strat
 For axis-aligned ellpses parametrized by
 
 $$
+\begin{gather*}
 x(t) = a\cos{t}\\
 y(t) = b\sin{t}
+\end{gather*}
 $$
 
 the squared distance from the origin is
